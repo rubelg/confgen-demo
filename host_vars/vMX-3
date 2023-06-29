@@ -2,9 +2,9 @@
     "asn": "7990",
     "bgp": [
         {
-            "desc": "IBGP to vMX-3",
+            "desc": "IBGP to vMX-5",
             "group": "IBGP",
-            "peer": "1.1.1.3",
+            "peer": "1.1.1.5",
             "peeras": 7990
         }
     ],
@@ -38,8 +38,8 @@
             ]
         },
         {
-            "desc": "To vMX-3",
-            "port": "ge-0/0/1",
+            "desc": "To vMX-5",
+            "port": "ge-0/0/5",
             "unit": [
                 {
                     "ipv4_address": "185.80.3.5/30i",
