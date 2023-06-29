@@ -1,0 +1,18 @@
+#jinja2: lstrip_blocks: "True", trim_blocks: "True"
+
+{# Create Interface Config #}
+{%- if ports is defined %}
+  {% for p in ports %}
+    {% if p.desc is defined and p.port != 'irb' %}
+set interfaces {{ p.port }} description "{{ p.desc }}"
+    {% endif %}
+    {% if p.unit is defined %}
+       {% for u in p.unit %}
+         {% if u.desc is defined %}
+set interfaces {{ p.port }} unit {{ u.number }} description {{ u.desc }}
+         {% endif %}
+set interfaces {{ p.port }} unit {{ u.number }} family inet address {{ u.ipv4_address }}
+       {% endfor %}
+    {% endif %}
+  {% endfor %}
+{% endif -%}

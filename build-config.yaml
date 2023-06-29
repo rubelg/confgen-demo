@@ -1,0 +1,83 @@
+---
+- name: Generate Config
+  hosts:
+    - all
+  gather_facts: no
+  connection: local
+
+  vars:
+    conf_dir: "~/ansible-confgen/config_files/{{ inventory_hostname }}"
+    
+
+  vars_files:
+    - "~/ansible-confgen/group_vars/global_vars.yml"
+
+  tasks:
+
+    - name: Create Config Directory
+      file:
+        path: "{{ conf_dir }}"
+        state: directory
+
+    - debug: var=conf_dir
+
+    - name: Build Common Config
+      template:
+        src: "templates/common.j2"
+        dest: "{{ conf_dir }}/common.conf"
+      tags: common
+
+    - name: Build Interface Config
+      template:
+        src: "templates/interfaces.j2"
+        dest: "{{ conf_dir }}/interfaces.conf"
+      tags: interfaces
+
+    - name: Build Policy Config
+      template:
+        src: "templates/policy.j2"
+        dest: "{{ conf_dir }}/policy.conf"
+      tags: policy
+
+    - name: Build Firewall Config
+      template:
+        src: "templates/firewall.j2"
+        dest: "{{ conf_dir }}/firewall.conf"
+      tags: firewall
+
+    - name: Build Vlans and IRB Interfaces
+      template:
+        src: "templates/vlans.j2"
+        dest: "{{ conf_dir }}/vlans.conf"
+      tags: vlans
+
+    - name: Build Routing-Options
+      template:
+        src: "templates/routing-options.j2"
+        dest: "{{ conf_dir }}/routing-options.conf"
+      tags: routing-options
+
+    - name: Build BGP
+      template:
+        src: "templates/bgp.j2"
+        dest: "{{ conf_dir }}/zzbgp.conf"
+      tags: bgp
+
+    - name: Build OSPF
+      template:
+        src: "templates/ospf.j2"
+        dest: "{{ conf_dir }}/ospf.conf"
+      tags: ospf
+
+    - name: Build SNMP
+      template:
+        src: "templates/snmp.j2"
+        dest: "{{ conf_dir }}/snmp.conf"
+      tags: snmp
+
+    - name: Assemble Config
+      assemble:
+        src: "{{ conf_dir }}/"
+        dest: "{{ conf_dir }}/{{ inventory_hostname }}-full_cfg.set"
+        regexp: 'conf$'
+

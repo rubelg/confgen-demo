@@ -1,0 +1,60 @@
+---
+global:
+  
+  ntp:
+    key:
+      - key_id: 1
+        value: One!
+      - key_id: 2
+        value: Two!
+
+    servers:
+      - host: 1.1.1.1
+        key_id: 1
+      - host: 1.1.1.2
+        key_id: 2
+
+  dns:
+    domain: leghorn.net
+    servers:
+      - host: 2.2.2.1
+      - host: 2.2.2.2
+
+  radius:
+    servers:
+      - host: 3.3.3.1
+        secret: "three-one"
+      - host: 3.3.3.2
+        secret: "three-two"
+
+  syslog:
+    servers:
+      - host: 4.4.4.1
+      - host: 4.4.4.2
+
+  mgmt_prefixes:
+    comment: Jump Box and Mgmt Servers
+    ipv4:
+      - net: 1.1.1.0/24
+      - net: 2.2.2.0/24
+      - net: 3.3.3.0/24
+      - net: 4.4.4.0/24
+
+  snmp:
+    snmpcontact: Chicken NOC
+    trap_community:
+      - name: feathers
+        comment: "SNMP Traps"
+        server:
+        - host: 1.1.1.10
+        - host: 1.1.1.11
+    community:
+      - name: wings
+        comment: "Polling Devices"
+        ipv4:
+          - net: 1.1.1.0/24
+          - net: 2.2.2.0/24
+          - net: 3.3.3.0/24
+          - net: 4.4.4.0/24
+          - net: 5.5.5.0/24
+

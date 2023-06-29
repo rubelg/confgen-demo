@@ -1,0 +1,6 @@
+#jinja2: lstrip_blocks: "True", trim_blocks: "True"
+
+{% if hostname is defined %}
+set firewall family inet filter RE-INGRESS term ALLOW-MGMT from source-prefix-list MGMT-NETWORKS
+set firewall family inet filter RE-INGRESS term ALLOW-MGMT then accept
+{% endif -%}

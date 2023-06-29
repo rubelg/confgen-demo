@@ -1,0 +1,17 @@
+#jinja2: lstrip_blocks: "True", trim_blocks: "True"
+
+{# Create OSPF Config #}
+{% if ports is defined %}
+  {% for p in ports %}
+     {% if p.unit is defined %}
+       {%- for u in p.unit -%}
+         {% if u.ospf is defined %}
+set procotols ospf area {{ u.area }} interfaces {{ p.port }}.{{ u.number }}
+            {% if u.passive is defined -%}
+set protocols ospf area {{ u.area }} interfaces {{ p.port }} passive {{ u.number }}
+            {% endif %}
+         {% endif %} 
+      {%- endfor -%}
+     {% endif %}
+  {% endfor %}
+{% endif -%}

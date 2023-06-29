@@ -1,0 +1,28 @@
+#jinja2: lstrip_blocks: "True", trim_blocks: "True"
+
+{% if snmp_desc is defined %}
+set snmp description "{{ snmp_desc }}"
+{% endif %}
+{% if snmp_location is defined %}
+set snmp_location "{{ snmp_location }}"
+{% endif %}
+{% if snmp_contact is defined %}
+set snmp_contact "{{ snmp_contact }}"
+{% endif %}
+{% for c in global.snmp.community %}
+set snmp community {{ c.name }} authorization read-only
+  {% if c.ipv4 is defined %}
+    {% for n in c.ipv4 %}
+set snmp community {{ c.name }} clients {{ n.net }}
+    {% endfor %}
+  {% endif %}
+{% endfor %}
+{% for c in global.snmp.trap_community %}
+set snmp trap-group {{ c.name }} version v2
+set snmp trap-group {{ c.name }} categories link
+  {% if c.server is defined %}
+     {% for h in c.server %}
+set snmp trap-group {{ c.name }} targets {{ h.host }}
+     {% endfor %}
+  {% endif %}
+{% endfor %}

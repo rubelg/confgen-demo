@@ -1,0 +1,6 @@
+#jinja2: lstrip_blocks: "True", trim_blocks: "True"
+
+{% for n in global.mgmt_prefixes.ipv4 %}
+set policy-options prefix-list MGMT-NETWORKS {{ n.net }}
+{% endfor -%}
+

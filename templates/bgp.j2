@@ -1,0 +1,10 @@
+#jinja2: lstrip_blocks: "True", trim_blocks: "True"
+
+{% if bgp is defined %}
+  {% for p in bgp %}
+    {% if p.peer is defined %}
+set protocols bgp group {{ p.group }} neighbor {{ p.peer }} descriptions "{{ p.desc }}"
+set protocols bgp group {{ p.group }} neighbor {{ p.peer }} peer-as {{ p.peeras }}
+    {% endif %}
+  {% endfor %}
+{% endif -%}

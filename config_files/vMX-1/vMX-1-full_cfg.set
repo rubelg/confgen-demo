@@ -1,0 +1,77 @@
+
+set system host-name vmx-1
+set system root-authentication encrypted-password "Tester"
+set system services ssh
+set system services netconf ssh
+
+set system syslog host 4.4.4.1 any info
+set system syslog host 4.4.4.1 facility-override local6
+set system syslog host 4.4.4.2 any info
+set system syslog host 4.4.4.2 facility-override local6
+set system syslog user * any emergency
+set system syslog file messages any info
+set system syslog source-address 192.168.1.201
+
+set system radius-server 3.3.3.1 port 1645
+set system radius-server 3.3.3.1 secret three-one
+set system radius-server source-address 192.168.1.201
+set system radius-server 3.3.3.2 port 1645
+set system radius-server 3.3.3.2 secret three-two
+set system radius-server source-address 192.168.1.201
+
+set system domain-name leghorn.net
+set system name-server 2.2.2.1
+set system name-server 2.2.2.2
+
+set system ntp authentication-key 1 type md5
+set system ntp authentication-key 1 value One!
+set system ntp authentication-key 2 type md5
+set system ntp authentication-key 2 value Two!
+set system ntp server 1.1.1.1 key 1
+set system ntp server 1.1.1.2 key 2
+set system ntp trusted-key 1
+set system ntp trusted-key 2
+
+set firewall family inet filter RE-INGRESS term ALLOW-MGMT from source-prefix-list MGMT-NETWORKS
+set firewall family inet filter RE-INGRESS term ALLOW-MGMT then accept
+
+set interfaces lo0 description "vMX-1 Loopback"
+set interfaces lo0 unit 0 family inet address 1.1.1.1/32
+set interfaces ge-0/0/0 description "To vMX-2"
+set interfaces ge-0/0/0 unit 0 family inet address 185.80.1.1/30
+set interfaces ge-0/0/1 description "To vMX-3"
+set interfaces ge-0/0/1 unit 0 family inet address 185.80.1.5/30i
+set interfaces irb unit 10 description To servers
+set interfaces irb unit 10 family inet address 9.9.9.1/24
+
+set procotols ospf area 0.0.0.0 interfaces lo0.0
+set protocols ospf area 0.0.0.0 interfaces lo0 passive 0
+set procotols ospf area 0.0.0.0 interfaces ge-0/0/0.0
+
+set policy-options prefix-list MGMT-NETWORKS 1.1.1.0/24
+set policy-options prefix-list MGMT-NETWORKS 2.2.2.0/24
+set policy-options prefix-list MGMT-NETWORKS 3.3.3.0/24
+set policy-options prefix-list MGMT-NETWORKS 4.4.4.0/24
+
+set routing-options autonomous-system 7990 asdot-notation
+
+set snmp description "My vMX-1"
+set snmp_location "Foghorn Chicken Shed"
+set snmp_contact "Rooster"
+set snmp community wings authorization read-only
+set snmp community wings clients 1.1.1.0/24
+set snmp community wings clients 2.2.2.0/24
+set snmp community wings clients 3.3.3.0/24
+set snmp community wings clients 4.4.4.0/24
+set snmp community wings clients 5.5.5.0/24
+set snmp trap-group feathers version v2
+set snmp trap-group feathers categories link
+set snmp trap-group feathers targets 1.1.1.10
+set snmp trap-group feathers targets 1.1.1.11
+
+set bridge-domains TO-SERVERS vlan-id 10i
+set bridge-domains TO-SERVERS description "Server VLAN"
+set bridge-domains TO-SERVERS routing-interface irb.10
+
+set protocols bgp group IBGP neighbor 1.1.1.2 descriptions "IBGP to vMX-2"
+set protocols bgp group IBGP neighbor 1.1.1.2 peer-as 7990

@@ -1,0 +1,56 @@
+---
+hostname: vMX-2
+fxp0_address: 192.168.1.201
+
+role: pe
+asn: '7990'
+vendor: juniper
+model: mx
+
+snmp_desc: 'My vMX-2'
+snmp_location: "Barnyard Dog's Doghouse"
+snmp_contact: 'Dawg'
+
+ports:
+  - port: lo0
+    desc: 'vMX-2 Loopback'
+    unit: 
+      - number: 0
+        ipv4_address: 1.1.1.2/32
+        ospf: 1
+        area: 0.0.0.0
+        passive: 1
+
+  - port: ge-0/0/0
+    desc: 'To vMX-1'
+    unit: 
+      - number: 0
+        ipv4_address: 185.80.1.2/30
+        ospf: 1
+        area: 0.0.0.0
+
+  - port: ge-0/0/1
+    desc: 'To vMX-3'
+    unit:
+      - number: 0
+        ipv4_address: 185.80.1.6/30
+  
+  - port: irb
+    unit: 
+      - number: 10
+        desc: 'To servers'
+        ipv4_address: 9.9.9.2/24
+
+vlans:
+  - vlan: 10
+    name: 'TO-SERVERS'
+    desc: 'Server VLAN'
+    l3interface: yes
+        
+
+bgp:
+  - peer: 1.1.1.1
+    group: IBGP
+    peeras: 7990
+    desc: 'IBGP to vMX-1'
+

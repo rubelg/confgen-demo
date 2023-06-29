@@ -1,0 +1,11 @@
+#jinja2: lstrip_blocks: "True", trim_blocks: "True"
+
+{% if vlans is defined %}
+  {% for v in vlans %}
+set bridge-domains {{ v.name }} vlan-id {{ v.vlan }}i
+set bridge-domains {{ v.name }} description "{{ v.desc }}"
+    {% if v.l3interface is defined %}
+set bridge-domains {{ v.name }} routing-interface irb.{{ v.vlan }}
+    {% endif %}
+  {% endfor %}
+{% endif %}

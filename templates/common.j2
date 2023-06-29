@@ -1,0 +1,41 @@
+#jinja2: lstrip_blocks: "True", trim_blocks: "True"
+
+set system host-name {{ hostname|lower }}
+set system root-authentication encrypted-password "Tester"
+set system services ssh
+set system services netconf ssh
+
+{% set syslog_servers = global.syslog.servers %}
+{% for h in syslog_servers %}
+set system syslog host {{ h.host }} any info
+set system syslog host {{ h.host }} facility-override local6
+{% endfor %}
+set system syslog user * any emergency
+set system syslog file messages any info
+set system syslog source-address {{ fxp0_address }}
+
+{% set radius_servers = global.radius.servers %}
+{% for h in radius_servers %}
+set system radius-server {{ h.host }} port 1645
+set system radius-server {{ h.host }} secret {{ h.secret }}
+set system radius-server source-address {{ fxp0_address }}
+{% endfor %}
+
+{% set servers = global.dns.servers %}
+set system domain-name {{ global.dns.domain }}
+{% for h in servers %}
+set system name-server {{ h.host }}
+{% endfor %}
+
+{% set ntp_key = global.ntp.key %}
+{% for k in ntp_key %}
+set system ntp authentication-key {{ k.key_id }} type md5
+set system ntp authentication-key {{ k.key_id }} value {{ k.value }}
+{% endfor %}
+{% set ntp_servers = global.ntp.servers %}
+{% for h in ntp_servers %}
+set system ntp server {{ h.host }} key {{ h.key_id }}
+{% endfor %}
+{% for k in ntp_key %}
+set system ntp trusted-key {{ k.key_id }}
+{% endfor %}

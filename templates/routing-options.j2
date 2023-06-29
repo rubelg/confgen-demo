@@ -1,0 +1,4 @@
+#jinja2: lstrip_blocks: "True", trim_blocks: "True"
+{%- if asn is defined %}
+set routing-options autonomous-system {{ asn }} asdot-notation
+{% endif %}
