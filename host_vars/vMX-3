@@ -1,0 +1,74 @@
+{
+    "asn": "7990",
+    "bgp": [
+        {
+            "desc": "IBGP to vMX-3",
+            "group": "IBGP",
+            "peer": "1.1.1.3",
+            "peeras": 7990
+        }
+    ],
+    "fxp0_address": "192.168.1.203",
+    "hostname": "vMX-3",
+    "model": "mx",
+    "ports": [
+        {
+            "desc": "vMX-1 Loopback",
+            "port": "lo0",
+            "unit": [
+                {
+                    "area": "0.0.0.0",
+                    "ipv4_address": "3.1.1.1/32",
+                    "number": 0,
+                    "ospf": 1,
+                    "passive": 1
+                }
+            ]
+        },
+        {
+            "desc": "To vMX-2",
+            "port": "ge-0/0/0",
+            "unit": [
+                {
+                    "area": "0.0.0.0",
+                    "ipv4_address": "185.80.3.1/30",
+                    "number": 0,
+                    "ospf": 1
+                }
+            ]
+        },
+        {
+            "desc": "To vMX-3",
+            "port": "ge-0/0/1",
+            "unit": [
+                {
+                    "ipv4_address": "185.80.3.5/30i",
+                    "number": 0
+                }
+            ]
+        },
+        {
+            "port": "irb",
+            "unit": [
+                {
+                    "desc": "To servers",
+                    "ipv4_address": "9.9.9.1/24",
+                    "number": 10
+                }
+            ]
+        }
+    ],
+    "role": "pe",
+    "snmp_contact": "Rooster",
+    "snmp_desc": "My vMX-3",
+    "snmp_location": "Foghorn Chicken Shed",
+    "vendor": "juniper",
+    "vlans": [
+        {
+            "desc": "Server VLAN",
+            "l3interface": true,
+            "name": "TO-SERVERS",
+            "vlan": 10
+        }
+    ]
+}
